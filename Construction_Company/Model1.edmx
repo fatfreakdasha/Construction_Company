@@ -1,0 +1,508 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Хранилище Construction_CompanyModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Бригадиры">
+          <Key>
+            <PropertyRef Name="ID_Бригадира" />
+          </Key>
+          <Property Name="ID_Бригадира" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Имя_бригадира" Type="nvarchar" MaxLength="255" />
+          <Property Name="ID_Бригады" Type="int" />
+        </EntityType>
+        <EntityType Name="Бригады">
+          <Key>
+            <PropertyRef Name="ID_Бригады" />
+          </Key>
+          <Property Name="ID_Бригады" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название_бригады" Type="nvarchar" MaxLength="255" />
+          <Property Name="Специализация" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="График_работ">
+          <Key>
+            <PropertyRef Name="ID_Графика" />
+          </Key>
+          <Property Name="ID_Графика" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Здания" Type="int" />
+          <Property Name="Дата_начала" Type="datetime" />
+          <Property Name="Дата_окончания" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Здания">
+          <Key>
+            <PropertyRef Name="ID_Здания" />
+          </Key>
+          <Property Name="ID_Здания" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название_здания" Type="nvarchar" MaxLength="255" />
+          <Property Name="ID_Типа" Type="int" />
+        </EntityType>
+        <EntityType Name="Использование_материалов">
+          <Key>
+            <PropertyRef Name="ID_Использования" />
+          </Key>
+          <Property Name="ID_Использования" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ID_Здания" Type="int" />
+          <Property Name="ID_Материала" Type="int" />
+          <Property Name="Количество_использованных" Type="int" />
+        </EntityType>
+        <EntityType Name="Материалы">
+          <Key>
+            <PropertyRef Name="ID_Материала" />
+          </Key>
+          <Property Name="ID_Материала" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название_материала" Type="nvarchar" MaxLength="255" />
+          <Property Name="Количество_на_складе" Type="int" />
+        </EntityType>
+        <EntityType Name="Рабочие">
+          <Key>
+            <PropertyRef Name="ID_Работника" />
+          </Key>
+          <Property Name="ID_Работника" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Имя_рабочего" Type="nvarchar" MaxLength="255" />
+          <Property Name="Специальности" Type="nvarchar(max)" />
+          <Property Name="ID_Бригады" Type="int" />
+        </EntityType>
+        <EntityType Name="Типы_зданий">
+          <Key>
+            <PropertyRef Name="ID_Типа" />
+          </Key>
+          <Property Name="ID_Типа" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Название_типа" Type="nvarchar" MaxLength="255" />
+          <Property Name="Описание_типа" Type="nvarchar(max)" />
+        </EntityType>
+        <Association Name="FK__Бригадиры__ID_Бр__403A8C7D">
+          <End Role="Бригады" Type="Self.Бригады" Multiplicity="0..1" />
+          <End Role="Бригадиры" Type="Self.Бригадиры" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Бригады">
+              <PropertyRef Name="ID_Бригады" />
+            </Principal>
+            <Dependent Role="Бригадиры">
+              <PropertyRef Name="ID_Бригады" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__График_ра__ID_Зд__45F365D3">
+          <End Role="Здания" Type="Self.Здания" Multiplicity="0..1" />
+          <End Role="График_работ" Type="Self.График_работ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Здания">
+              <PropertyRef Name="ID_Здания" />
+            </Principal>
+            <Dependent Role="График_работ">
+              <PropertyRef Name="ID_Здания" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Здания__ID_Типа__4316F928">
+          <End Role="Типы_зданий" Type="Self.Типы_зданий" Multiplicity="0..1" />
+          <End Role="Здания" Type="Self.Здания" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Типы_зданий">
+              <PropertyRef Name="ID_Типа" />
+            </Principal>
+            <Dependent Role="Здания">
+              <PropertyRef Name="ID_Типа" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Использов__ID_Зд__48CFD27E">
+          <End Role="Здания" Type="Self.Здания" Multiplicity="0..1" />
+          <End Role="Использование_материалов" Type="Self.Использование_материалов" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Здания">
+              <PropertyRef Name="ID_Здания" />
+            </Principal>
+            <Dependent Role="Использование_материалов">
+              <PropertyRef Name="ID_Здания" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Использов__ID_Ма__49C3F6B7">
+          <End Role="Материалы" Type="Self.Материалы" Multiplicity="0..1" />
+          <End Role="Использование_материалов" Type="Self.Использование_материалов" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Материалы">
+              <PropertyRef Name="ID_Материала" />
+            </Principal>
+            <Dependent Role="Использование_материалов">
+              <PropertyRef Name="ID_Материала" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Рабочие__ID_Бриг__3D5E1FD2">
+          <End Role="Бригады" Type="Self.Бригады" Multiplicity="0..1" />
+          <End Role="Рабочие" Type="Self.Рабочие" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Бригады">
+              <PropertyRef Name="ID_Бригады" />
+            </Principal>
+            <Dependent Role="Рабочие">
+              <PropertyRef Name="ID_Бригады" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище Construction_CompanyModelContainer">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Бригадиры" EntityType="Self.Бригадиры" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Бригады" EntityType="Self.Бригады" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="График_работ" EntityType="Self.График_работ" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Здания" EntityType="Self.Здания" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Использование_материалов" EntityType="Self.Использование_материалов" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Материалы" EntityType="Self.Материалы" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Рабочие" EntityType="Self.Рабочие" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Типы_зданий" EntityType="Self.Типы_зданий" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Бригадиры__ID_Бр__403A8C7D" Association="Self.FK__Бригадиры__ID_Бр__403A8C7D">
+            <End Role="Бригады" EntitySet="Бригады" />
+            <End Role="Бригадиры" EntitySet="Бригадиры" />
+          </AssociationSet>
+          <AssociationSet Name="FK__График_ра__ID_Зд__45F365D3" Association="Self.FK__График_ра__ID_Зд__45F365D3">
+            <End Role="Здания" EntitySet="Здания" />
+            <End Role="График_работ" EntitySet="График_работ" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Здания__ID_Типа__4316F928" Association="Self.FK__Здания__ID_Типа__4316F928">
+            <End Role="Типы_зданий" EntitySet="Типы_зданий" />
+            <End Role="Здания" EntitySet="Здания" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Использов__ID_Зд__48CFD27E" Association="Self.FK__Использов__ID_Зд__48CFD27E">
+            <End Role="Здания" EntitySet="Здания" />
+            <End Role="Использование_материалов" EntitySet="Использование_материалов" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Использов__ID_Ма__49C3F6B7" Association="Self.FK__Использов__ID_Ма__49C3F6B7">
+            <End Role="Материалы" EntitySet="Материалы" />
+            <End Role="Использование_материалов" EntitySet="Использование_материалов" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Рабочие__ID_Бриг__3D5E1FD2" Association="Self.FK__Рабочие__ID_Бриг__3D5E1FD2">
+            <End Role="Бригады" EntitySet="Бригады" />
+            <End Role="Рабочие" EntitySet="Рабочие" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Construction_CompanyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Бригадиры">
+          <Key>
+            <PropertyRef Name="ID_Бригадира" />
+          </Key>
+          <Property Name="ID_Бригадира" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Имя_бригадира" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ID_Бригады" Type="Int32" />
+          <NavigationProperty Name="Бригады" Relationship="Self.FK__Бригадиры__ID_Бр__403A8C7D" FromRole="Бригадиры" ToRole="Бригады" />
+        </EntityType>
+        <EntityType Name="Бригады">
+          <Key>
+            <PropertyRef Name="ID_Бригады" />
+          </Key>
+          <Property Name="ID_Бригады" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название_бригады" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Специализация" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Бригадиры" Relationship="Self.FK__Бригадиры__ID_Бр__403A8C7D" FromRole="Бригады" ToRole="Бригадиры" />
+          <NavigationProperty Name="Рабочие" Relationship="Self.FK__Рабочие__ID_Бриг__3D5E1FD2" FromRole="Бригады" ToRole="Рабочие" />
+        </EntityType>
+        <EntityType Name="График_работ">
+          <Key>
+            <PropertyRef Name="ID_Графика" />
+          </Key>
+          <Property Name="ID_Графика" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Здания" Type="Int32" />
+          <Property Name="Дата_начала" Type="DateTime" Precision="3" />
+          <Property Name="Дата_окончания" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Здания" Relationship="Self.FK__График_ра__ID_Зд__45F365D3" FromRole="График_работ" ToRole="Здания" />
+        </EntityType>
+        <EntityType Name="Здания">
+          <Key>
+            <PropertyRef Name="ID_Здания" />
+          </Key>
+          <Property Name="ID_Здания" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название_здания" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ID_Типа" Type="Int32" />
+          <NavigationProperty Name="График_работ" Relationship="Self.FK__График_ра__ID_Зд__45F365D3" FromRole="Здания" ToRole="График_работ" />
+          <NavigationProperty Name="Типы_зданий" Relationship="Self.FK__Здания__ID_Типа__4316F928" FromRole="Здания" ToRole="Типы_зданий" />
+          <NavigationProperty Name="Использование_материалов" Relationship="Self.FK__Использов__ID_Зд__48CFD27E" FromRole="Здания" ToRole="Использование_материалов" />
+        </EntityType>
+        <EntityType Name="Использование_материалов">
+          <Key>
+            <PropertyRef Name="ID_Использования" />
+          </Key>
+          <Property Name="ID_Использования" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ID_Здания" Type="Int32" />
+          <Property Name="ID_Материала" Type="Int32" />
+          <Property Name="Количество_использованных" Type="Int32" />
+          <NavigationProperty Name="Здания" Relationship="Self.FK__Использов__ID_Зд__48CFD27E" FromRole="Использование_материалов" ToRole="Здания" />
+          <NavigationProperty Name="Материалы" Relationship="Self.FK__Использов__ID_Ма__49C3F6B7" FromRole="Использование_материалов" ToRole="Материалы" />
+        </EntityType>
+        <EntityType Name="Материалы">
+          <Key>
+            <PropertyRef Name="ID_Материала" />
+          </Key>
+          <Property Name="ID_Материала" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название_материала" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Количество_на_складе" Type="Int32" />
+          <NavigationProperty Name="Использование_материалов" Relationship="Self.FK__Использов__ID_Ма__49C3F6B7" FromRole="Материалы" ToRole="Использование_материалов" />
+        </EntityType>
+        <EntityType Name="Рабочие">
+          <Key>
+            <PropertyRef Name="ID_Работника" />
+          </Key>
+          <Property Name="ID_Работника" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Имя_рабочего" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Специальности" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ID_Бригады" Type="Int32" />
+          <NavigationProperty Name="Бригады" Relationship="Self.FK__Рабочие__ID_Бриг__3D5E1FD2" FromRole="Рабочие" ToRole="Бригады" />
+        </EntityType>
+        <EntityType Name="Типы_зданий">
+          <Key>
+            <PropertyRef Name="ID_Типа" />
+          </Key>
+          <Property Name="ID_Типа" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Название_типа" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Описание_типа" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Здания" Relationship="Self.FK__Здания__ID_Типа__4316F928" FromRole="Типы_зданий" ToRole="Здания" />
+        </EntityType>
+        <Association Name="FK__Бригадиры__ID_Бр__403A8C7D">
+          <End Role="Бригады" Type="Self.Бригады" Multiplicity="0..1" />
+          <End Role="Бригадиры" Type="Self.Бригадиры" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Бригады">
+              <PropertyRef Name="ID_Бригады" />
+            </Principal>
+            <Dependent Role="Бригадиры">
+              <PropertyRef Name="ID_Бригады" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Рабочие__ID_Бриг__3D5E1FD2">
+          <End Role="Бригады" Type="Self.Бригады" Multiplicity="0..1" />
+          <End Role="Рабочие" Type="Self.Рабочие" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Бригады">
+              <PropertyRef Name="ID_Бригады" />
+            </Principal>
+            <Dependent Role="Рабочие">
+              <PropertyRef Name="ID_Бригады" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__График_ра__ID_Зд__45F365D3">
+          <End Role="Здания" Type="Self.Здания" Multiplicity="0..1" />
+          <End Role="График_работ" Type="Self.График_работ" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Здания">
+              <PropertyRef Name="ID_Здания" />
+            </Principal>
+            <Dependent Role="График_работ">
+              <PropertyRef Name="ID_Здания" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Здания__ID_Типа__4316F928">
+          <End Role="Типы_зданий" Type="Self.Типы_зданий" Multiplicity="0..1" />
+          <End Role="Здания" Type="Self.Здания" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Типы_зданий">
+              <PropertyRef Name="ID_Типа" />
+            </Principal>
+            <Dependent Role="Здания">
+              <PropertyRef Name="ID_Типа" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Использов__ID_Зд__48CFD27E">
+          <End Role="Здания" Type="Self.Здания" Multiplicity="0..1" />
+          <End Role="Использование_материалов" Type="Self.Использование_материалов" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Здания">
+              <PropertyRef Name="ID_Здания" />
+            </Principal>
+            <Dependent Role="Использование_материалов">
+              <PropertyRef Name="ID_Здания" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Использов__ID_Ма__49C3F6B7">
+          <End Role="Материалы" Type="Self.Материалы" Multiplicity="0..1" />
+          <End Role="Использование_материалов" Type="Self.Использование_материалов" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Материалы">
+              <PropertyRef Name="ID_Материала" />
+            </Principal>
+            <Dependent Role="Использование_материалов">
+              <PropertyRef Name="ID_Материала" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Construction_CompanyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Бригадиры" EntityType="Self.Бригадиры" />
+          <EntitySet Name="Бригады" EntityType="Self.Бригады" />
+          <EntitySet Name="График_работ" EntityType="Self.График_работ" />
+          <EntitySet Name="Здания" EntityType="Self.Здания" />
+          <EntitySet Name="Использование_материалов" EntityType="Self.Использование_материалов" />
+          <EntitySet Name="Материалы" EntityType="Self.Материалы" />
+          <EntitySet Name="Рабочие" EntityType="Self.Рабочие" />
+          <EntitySet Name="Типы_зданий" EntityType="Self.Типы_зданий" />
+          <AssociationSet Name="FK__Бригадиры__ID_Бр__403A8C7D" Association="Self.FK__Бригадиры__ID_Бр__403A8C7D">
+            <End Role="Бригады" EntitySet="Бригады" />
+            <End Role="Бригадиры" EntitySet="Бригадиры" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Рабочие__ID_Бриг__3D5E1FD2" Association="Self.FK__Рабочие__ID_Бриг__3D5E1FD2">
+            <End Role="Бригады" EntitySet="Бригады" />
+            <End Role="Рабочие" EntitySet="Рабочие" />
+          </AssociationSet>
+          <AssociationSet Name="FK__График_ра__ID_Зд__45F365D3" Association="Self.FK__График_ра__ID_Зд__45F365D3">
+            <End Role="Здания" EntitySet="Здания" />
+            <End Role="График_работ" EntitySet="График_работ" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Здания__ID_Типа__4316F928" Association="Self.FK__Здания__ID_Типа__4316F928">
+            <End Role="Типы_зданий" EntitySet="Типы_зданий" />
+            <End Role="Здания" EntitySet="Здания" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Использов__ID_Зд__48CFD27E" Association="Self.FK__Использов__ID_Зд__48CFD27E">
+            <End Role="Здания" EntitySet="Здания" />
+            <End Role="Использование_материалов" EntitySet="Использование_материалов" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Использов__ID_Ма__49C3F6B7" Association="Self.FK__Использов__ID_Ма__49C3F6B7">
+            <End Role="Материалы" EntitySet="Материалы" />
+            <End Role="Использование_материалов" EntitySet="Использование_материалов" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище Construction_CompanyModelContainer" CdmEntityContainer="Construction_CompanyEntities">
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="Construction_CompanyModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Бригадиры">
+            <EntityTypeMapping TypeName="Construction_CompanyModel.Бригадиры">
+              <MappingFragment StoreEntitySet="Бригадиры">
+                <ScalarProperty Name="ID_Бригадира" ColumnName="ID_Бригадира" />
+                <ScalarProperty Name="Имя_бригадира" ColumnName="Имя_бригадира" />
+                <ScalarProperty Name="ID_Бригады" ColumnName="ID_Бригады" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Бригады">
+            <EntityTypeMapping TypeName="Construction_CompanyModel.Бригады">
+              <MappingFragment StoreEntitySet="Бригады">
+                <ScalarProperty Name="ID_Бригады" ColumnName="ID_Бригады" />
+                <ScalarProperty Name="Название_бригады" ColumnName="Название_бригады" />
+                <ScalarProperty Name="Специализация" ColumnName="Специализация" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="График_работ">
+            <EntityTypeMapping TypeName="Construction_CompanyModel.График_работ">
+              <MappingFragment StoreEntitySet="График_работ">
+                <ScalarProperty Name="ID_Графика" ColumnName="ID_Графика" />
+                <ScalarProperty Name="ID_Здания" ColumnName="ID_Здания" />
+                <ScalarProperty Name="Дата_начала" ColumnName="Дата_начала" />
+                <ScalarProperty Name="Дата_окончания" ColumnName="Дата_окончания" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Здания">
+            <EntityTypeMapping TypeName="Construction_CompanyModel.Здания">
+              <MappingFragment StoreEntitySet="Здания">
+                <ScalarProperty Name="ID_Здания" ColumnName="ID_Здания" />
+                <ScalarProperty Name="Название_здания" ColumnName="Название_здания" />
+                <ScalarProperty Name="ID_Типа" ColumnName="ID_Типа" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Использование_материалов">
+            <EntityTypeMapping TypeName="Construction_CompanyModel.Использование_материалов">
+              <MappingFragment StoreEntitySet="Использование_материалов">
+                <ScalarProperty Name="ID_Использования" ColumnName="ID_Использования" />
+                <ScalarProperty Name="ID_Здания" ColumnName="ID_Здания" />
+                <ScalarProperty Name="ID_Материала" ColumnName="ID_Материала" />
+                <ScalarProperty Name="Количество_использованных" ColumnName="Количество_использованных" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Материалы">
+            <EntityTypeMapping TypeName="Construction_CompanyModel.Материалы">
+              <MappingFragment StoreEntitySet="Материалы">
+                <ScalarProperty Name="ID_Материала" ColumnName="ID_Материала" />
+                <ScalarProperty Name="Название_материала" ColumnName="Название_материала" />
+                <ScalarProperty Name="Количество_на_складе" ColumnName="Количество_на_складе" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Рабочие">
+            <EntityTypeMapping TypeName="Construction_CompanyModel.Рабочие">
+              <MappingFragment StoreEntitySet="Рабочие">
+                <ScalarProperty Name="ID_Работника" ColumnName="ID_Работника" />
+                <ScalarProperty Name="Имя_рабочего" ColumnName="Имя_рабочего" />
+                <ScalarProperty Name="Специальности" ColumnName="Специальности" />
+                <ScalarProperty Name="ID_Бригады" ColumnName="ID_Бригады" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Типы_зданий">
+            <EntityTypeMapping TypeName="Construction_CompanyModel.Типы_зданий">
+              <MappingFragment StoreEntitySet="Типы_зданий">
+                <ScalarProperty Name="ID_Типа" ColumnName="ID_Типа" />
+                <ScalarProperty Name="Название_типа" ColumnName="Название_типа" />
+                <ScalarProperty Name="Описание_типа" ColumnName="Описание_типа" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
